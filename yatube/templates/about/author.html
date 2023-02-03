@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+<link rel="stylesheet" href="static/css/style.css">
+{% load static %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+<h1>Привет, я автор</h1>
+<p>
+  Тут я размещу информацию о себе.
+  <p>Меня зовут Василе крецу вот мой  <button onclick="window.location.href = 'https://github.com/EVA666999';">Github</button>
+</p>
+<details>
+    <summary>Подробная информация</summary>
+    <div class="content">
+      <p>
+        <li>Родился в Молдавие, в Россие с 11 лет. Сейчас мне 23 годика и живу в Питере.</li>
+        <li>Люблю читать книги о вселенной о том как всё утроенно откуда мы и зачем. Мозг и сознание ещё пару любимых тем для чтения. Вот пару книг которые мне очень понравились&#10084; &#11015;</li>
+        &#10102;<button onclick="window.location.href = 'https://www.litres.ru/din-bernett/idiotskiy-bescennyy-mozg-kak-my-poddaemsya-na-vse-ulovki-i-hit/otzivi/';">Идиотский бесценный мозг</button>
+        &#10103;<button onclick="window.location.href = 'https://www.litres.ru/dzho-dispenza/sila-podsoznaniya-ili-kak-izmenit-zhizn-za-4-nedeli/';">Диспенза Джо "Сила подсознания</button>
+      </p>
+      <li> А вот и я)))))<img src="{% static 'img/mi.png'%}" width="300" height="300" class="d-inline-block align-bot" alt="" ></li>
+    </div>
+    </div>
+  </details>
+{% endblock %}
