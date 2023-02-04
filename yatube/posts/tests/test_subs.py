@@ -11,6 +11,7 @@ class Followtests(TestCase):
         cls.author = User.objects.create_user(username="author")
         cls.user = User.objects.create_user(username="StasBasov")
         cls.user1 = User.objects.create_user(username="NotFollower")
+        cls.author1 = User.objects.create_user(username="authorr")
         cls.post = Post.objects.create(
             text="Тестовый текст",
             author=cls.author,
@@ -32,7 +33,6 @@ class Followtests(TestCase):
         followers = Follow.objects.count()
         self.assertEqual(Follow.objects.count(), followers)
         self.assertTemplateUsed(response, "posts/follow.html")
-        print(followers)
 
     def test_authorized_user_can_unfollow(self):
         response = self.authorized_client.get(
@@ -40,7 +40,6 @@ class Followtests(TestCase):
                 "username": self.author.username})
         )
         followers_count = Follow.objects.count()
-        print(followers_count)
         self.assertEqual(Follow.objects.count(), followers_count)
         self.assertTemplateUsed(response, "posts/follow.html")
 
@@ -49,15 +48,19 @@ class Followtests(TestCase):
         Follow.objects.filter(user=self.user).exists()
         followers = Follow.objects.count()
         self.assertEqual(Follow.objects.count(), followers)
-        print(followers)
         response = self.authorized_client.get(reverse("posts:follow_index"))
         first_object = response.context["page_obj"][0]
         text = first_object.text
-        print(text)
         self.assertEqual(text, first_object.text)
 
-    def context_for_non_subscribed_users(self):
+    def test_context_for_non_subscribed_users(self):
+        Post.objects.create(
+            text="Тестовый текст1",
+            author=self.author1,
+        )
+        Follow.objects.create(user=self.user1, author=self.author1)
+        Follow.objects.filter(user=self.user1).exists()
         response = self.not_follower.get(reverse("posts:follow_index"))
         first_object = response.context["page_obj"][0]
         text = first_object.text
-        self.assertNotIn(text, first_object.text)
+        self.assertIsNot(text, self.post.text)

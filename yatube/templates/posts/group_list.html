@@ -1,10 +1,48 @@
 {% extends 'base.html' %}
 {% load thumbnail %}
 {% block content %}
-<title>{{ group.slug }}</title>
-{% block header %}<h1>{{ group.title }}</h1>{% endblock %}
-<p>{{ group.description }}</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h3 class="animate-charcter">Все записи группы--{{ group.title }} {{group.description}}
+        
+      </h3>
+    </div>
+  </div>
+</div>
+<style>
+  .animate-charcter {
+    text-transform: uppercase;
+    background-image: linear-gradient(
+      -225deg,
+      #231557 0%,
+      #44107a 29%,
+      #ff1361 67%,
+      #fff800 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+    display: inline-block;
+    font-size: 50px;
+  }
+  
+  @keyframes textclip {
+    to {
+      background-position: 200% center;
+    }
+  }
+  
+</style>
 {% for post in page_obj %}
+<h1>{{ group.title }}</h1>
+<p>{{group.description}}</p>
 {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
           <img class="card-img my-2" src="{{ im.url }}">
         {% endthumbnail %}

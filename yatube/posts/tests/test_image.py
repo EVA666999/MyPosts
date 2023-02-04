@@ -3,9 +3,11 @@ import tempfile
 from http import HTTPStatus
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
+
 from posts.forms import PostForm
 from posts.models import Group, Post, User
 
@@ -72,6 +74,7 @@ class PostImagetests(TestCase):
                 text="Тестовый текст", image="posts/small.gif").exists()
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
+        cache.clear()
         response = self.guest_client.get(reverse("posts:index"))
         first_object = response.context["page_obj"][0]
         post_text_0 = first_object.text

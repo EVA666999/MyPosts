@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -54,6 +55,7 @@ class PostUrlsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_urls_guest_client_correct_template(self):
+        cache.clear()
         templates_url_names = {
             "posts/index.html": reverse("posts:index"),
             "posts/group_list.html": reverse(

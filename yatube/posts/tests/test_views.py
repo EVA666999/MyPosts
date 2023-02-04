@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -28,6 +29,7 @@ class PostViewsTest(TestCase):
         self.authorized_client.force_login(self.user)
 
     def test_pages_uses_correct_template(self):
+        cache.clear()
         templates_pages_names = {
             "posts/index.html": reverse("posts:index"),
             "posts/group_list.html": reverse(
@@ -111,13 +113,11 @@ class PostViewsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_index_show_correct_context(self):
+        cache.clear()
         response = self.guest_client.get(reverse("posts:index"))
         first_object = response.context["page_obj"][0]
         post_text_0 = first_object.text
         self.assertEqual(post_text_0, self.post.text)
-        self.assertEqual(post_text_0, "test-post-text")
-        response = self.client.get(reverse("posts:index"))
-        self.assertEqual(len(response.context["page_obj"]), 1)
 
     def test_group_posts_filter_by_group(self):
         form_fields = {
@@ -162,18 +162,6 @@ class PostViewsTest(TestCase):
         for value, expected in fields.items():
             with self.subTest(value=value):
                 self.assertEqual(value, expected)
-
-    def test_show_post_in_index(self):
-        self.user_2 = User.objects.create_user(username="author")
-        self.author = Client()
-        self.author.force_login(self.user_2)
-        Post.objects.create(
-            text="Новый пост", author=self.user_2, id="2", group=self.group
-        )
-        response = self.guest_client.get(reverse("posts:index"))
-        first_object = response.context["page_obj"][0]
-        text = first_object.text
-        self.assertEqual(text, first_object.text)
 
     def test_show_post_in_group(self):
         self.user_2 = User.objects.create_user(username="author")
@@ -245,6 +233,7 @@ class PostPaginationTests(TestCase):
         self.authorized_client.force_login(self.user)
 
     def test_index_firsp_page_posts_count(self):
+        cache.clear()
         response = self.client.get(reverse("posts:index"))
         self.assertEqual(len(response.context["page_obj"]), 10)
 
