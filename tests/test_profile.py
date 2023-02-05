@@ -22,7 +22,8 @@ class TestProfileView:
             response.status_code != 404
         ), f"Страница `{url_templ}` не найдена, проверьте этот адрес в *urls.py*"
 
-        profile_context = get_field_from_context(response.context, get_user_model())
+        profile_context = get_field_from_context(
+            response.context, get_user_model())
         assert (
             profile_context is not None
         ), f"Проверьте, что передали автора в контекст страницы `{url_templ}`"

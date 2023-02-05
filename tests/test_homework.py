@@ -198,7 +198,8 @@ class TestGroup:
         description = "Тестовое описание группы"
 
         assert Group.objects.count() == 0
-        group = Group.objects.create(title=title, slug=slug, description=description)
+        group = Group.objects.create(
+            title=title, slug=slug, description=description)
         assert Group.objects.count() == 1
         assert Group.objects.get(slug=slug).pk == group.pk
 

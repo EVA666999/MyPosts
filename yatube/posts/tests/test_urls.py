@@ -72,12 +72,19 @@ class PostUrlsTest(TestCase):
 
     def test_an_unauthorized_user_cannot_create_post(self):
         response = self.guest_client.get(reverse("posts:post_create"))
-        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:post_create")}')
+        self.assertRedirects(
+            response, f'{reverse("users:login")}?next='
+                      f'{reverse("posts:post_create")}'
+        )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_an_unauthorized_user_cannot_edit_post(self):
         response = self.guest_client.get(
             reverse("posts:edit_post", kwargs={"post_id": "2"})
         )
-        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:edit_post", args=[2])}')
+        self.assertRedirects(
+            response,
+            f'{reverse("users:login")}?next='
+            f'{reverse("posts:edit_post", args=[2])}',
+        )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)

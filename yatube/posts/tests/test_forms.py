@@ -44,8 +44,8 @@ class PostCreateForm(TestCase):
 
     def test_post_creation_form(self):
         response = self.authorized_client.get(reverse("posts:post_create"))
-        form_fields = {
-            "text": forms.fields.CharField, "group": forms.ModelChoiceField}
+        form_fields = {"text": forms.fields.CharField,
+                       "group": forms.ModelChoiceField}
         for value, expected in form_fields.items():
             with self.subTest(value=value):
                 form_field = response.context.get("form").fields.get(value)
@@ -57,10 +57,10 @@ class PostCreateForm(TestCase):
         self.author = Client()
         self.author.force_login(self.user_2)
         Post.objects.create(text="Новый пост", author=self.user_2, id="2")
-        response = self.author.get(reverse("posts:edit_post", kwargs={
-            "post_id": "2"}))
-        fields = {
-            "text": forms.fields.CharField, "group": forms.ModelChoiceField}
+        response = self.author.get(reverse("posts:edit_post",
+                                   kwargs={"post_id": "2"}))
+        fields = {"text": forms.fields.CharField,
+                  "group": forms.ModelChoiceField}
         for value, expected in fields.items():
             with self.subTest(value=value):
                 form_field = response.context.get("form").fields.get(value)
@@ -69,13 +69,20 @@ class PostCreateForm(TestCase):
 
     def test_an_unauthorized_user_cannot_create_post(self):
         response = self.guest_client.get(reverse("posts:post_create"))
-        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:post_create")}')
+        self.assertRedirects(
+            response, f'{reverse("users:login")}?next='
+                      f'{reverse("posts:post_create")}'
+        )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_an_unauthorized_user_cannot_edit_post(self):
         response = self.guest_client.get(
             reverse("posts:edit_post", kwargs={"post_id": self.post.id})
         )
-        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:edit_post", args=[self.post.id])}')
+        self.assertRedirects(
+            response,
+            f'{reverse("users:login")}?next='
+            f'{reverse("posts:edit_post", args=[self.post.id])}',
+        )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)

@@ -94,7 +94,8 @@ class TestCreateView:
             "Проверьте, что со страницы `/create/` после создания поста, "
             f"перенаправляете на страницу профиля автора `/profile/{user.username}`"
         )
-        post = Post.objects.filter(author=user, text=text, group__isnull=True).first()
+        post = Post.objects.filter(
+            author=user, text=text, group__isnull=True).first()
         assert (
             post is not None
         ), "Проверьте, что вы сохранили новый пост при отправке формы на странице `/create/`"

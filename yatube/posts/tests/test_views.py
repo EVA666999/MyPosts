@@ -63,8 +63,7 @@ class PostViewsTest(TestCase):
         Post.objects.create(
             text="Новый пост", author=self.user_2, id="2", group=self.group
         )
-        response = self.author.get(reverse("posts:edit_post", kwargs={
-            "post_id": "2"}))
+        response = self.author.get(reverse("posts:edit_post", kwargs={"post_id": "2"}))
         self.assertTemplateUsed(response, "posts/create_post.html")
 
     def test_create_post(self):
@@ -97,8 +96,7 @@ class PostViewsTest(TestCase):
             "text": "test-text",
         }
         response = self.author.post(
-            reverse("posts:edit_post", args=("2",)), data=form_data,
-            follow=True
+            reverse("posts:edit_post", args=("2",)), data=form_data, follow=True
         )
         self.assertRedirects(
             response,
@@ -136,8 +134,7 @@ class PostViewsTest(TestCase):
 
     def test_profile_filter_by_auth(self):
         form_fields = {
-            reverse("posts:profile", kwargs={"username": "auth"}):
-            Post.objects.filter(
+            reverse("posts:profile", kwargs={"username": "auth"}): Post.objects.filter(
                 author=self.post.author
             ),
         }
@@ -194,9 +191,7 @@ class PostViewsTest(TestCase):
         form_fields = {
             reverse(
                 "posts:group_posts", kwargs={"slug": self.group.slug}
-            ): Post.objects.exclude(
-                group=self.post.group
-            ),
+            ): Post.objects.exclude(group=self.post.group),
         }
         for value, expected in form_fields.items():
             with self.subTest(value=value):
@@ -219,10 +214,7 @@ class PostPaginationTests(TestCase):
         cls.post_list = []
         for i in range(0, 11):
             cls.post_list.append(
-                Post(
-                    text=f"Тестовый текст-{i}",
-                    group=cls.some_group,
-                    author=cls.user)
+                Post(text=f"Тестовый текст-{i}", group=cls.some_group, author=cls.user)
             )
         Post.objects.bulk_create(cls.post_list)
 
@@ -247,8 +239,7 @@ class PostPaginationTests(TestCase):
 
     def test_second_page_posts_count(self):
         response = self.client.get(
-            reverse("posts:group_posts", kwargs={"slug": "some_group"})
-            + "?page=2"
+            reverse("posts:group_posts", kwargs={"slug": "some_group"}) + "?page=2"
         )
         self.assertEqual(len(response.context["page_obj"]), 1)
 

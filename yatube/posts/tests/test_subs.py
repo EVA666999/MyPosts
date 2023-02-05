@@ -26,9 +26,9 @@ class Followtests(TestCase):
 
     def test_authorized_user_can_follow(self):
         response = self.authorized_client.get(
-            reverse("posts:profile_follow", kwargs={
-                "username": self.author.username
-            })
+            reverse(
+                "posts:profile_follow",
+                kwargs={"username": self.author.username})
         )
         followers = Follow.objects.count()
         self.assertEqual(Follow.objects.count(), followers)
@@ -36,8 +36,9 @@ class Followtests(TestCase):
 
     def test_authorized_user_can_unfollow(self):
         response = self.authorized_client.get(
-            reverse("posts:profile_unfollow", kwargs={
-                "username": self.author.username})
+            reverse(
+                "posts:profile_unfollow",
+                kwargs={"username": self.author.username})
         )
         followers_count = Follow.objects.count()
         self.assertEqual(Follow.objects.count(), followers_count)

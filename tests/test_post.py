@@ -88,7 +88,8 @@ class TestPostView:
         except ImportError:
             assert False, "Не найдена форма CommentForm в posts.form"
 
-        comment_form_context = get_field_from_context(response.context, CommentForm)
+        comment_form_context = get_field_from_context(
+            response.context, CommentForm)
         assert (
             comment_form_context is not None
         ), "Проверьте, что передали форму комментария в контекст страницы `/posts/<post_id>/` типа `CommentForm`"
@@ -198,7 +199,8 @@ class TestPostEditView:
         return File(file_obj, name=name)
 
     @pytest.mark.django_db(transaction=True)
-    def test_post_edit_view_author_post(self, mock_media, user_client, post_with_group):
+    def test_post_edit_view_author_post(
+            self, mock_media, user_client, post_with_group):
         text = "Проверка изменения поста!"
         try:
             response = user_client.get(f"/posts/{post_with_group.id}/edit")
@@ -214,7 +216,8 @@ class TestPostEditView:
 
         image = self.get_image_file("image2.png")
         response = user_client.post(
-            url, data={"text": text, "group": post_with_group.group_id, "image": image}
+            url, data={
+                "text": text, "group": post_with_group.group_id, "image": image}
         )
 
         assert response.status_code in (301, 302), (

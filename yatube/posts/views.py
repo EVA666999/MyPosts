@@ -6,12 +6,11 @@ from django.views.decorators.cache import cache_page
 from .forms import CommentForm, PostForm
 from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
-from django.shortcuts import redirect, render 
 
 SECONDS_CACHE = 20
 
 
-@cache_page(SECONDS_CACHE, key_prefix='index_page')
+@cache_page(SECONDS_CACHE, key_prefix="index_page")
 def index(request):
     context = get_page_context(Post.objects.all(), request)
     return render(request, "posts/index.html", context)
@@ -71,8 +70,7 @@ def post_edit(request, post_id):
     is_edit = True
     form = PostForm(instance=Post.objects.get(pk=post_id))
     if request.method == "POST":
-        form = PostForm(
-            request.POST, files=request.FILES or None, instance=post)
+        form = PostForm(request.POST, files=request.FILES or None, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -121,8 +119,7 @@ def profile_follow(request, username):
     user = request.user
     if (
         user != author
-        and not Follow.objects.filter(
-            user=request.user, author=author).exists()
+        and not Follow.objects.filter(user=request.user, author=author).exists()
     ):
         Follow.objects.get_or_create(user=user, author=author)
     return render(request, "posts/follow.html")

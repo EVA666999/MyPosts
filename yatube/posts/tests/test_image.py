@@ -62,8 +62,8 @@ class PostImagetests(TestCase):
             reverse("posts:post_create"), data=form_data, follow=True
         )
         self.assertRedirects(
-            response, reverse("posts:profile", kwargs={
-                "username": "StasBasov"})
+            response, reverse(
+                "posts:profile", kwargs={"username": "StasBasov"})
         )
         self.assertEqual(Post.objects.count(), post_count + 1)
         self.assertTrue(

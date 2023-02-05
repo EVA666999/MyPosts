@@ -20,7 +20,8 @@ def mixer():
 @pytest.fixture
 def post(user):
     image = tempfile.NamedTemporaryFile(suffix=".jpg").name
-    return Post.objects.create(text="Тестовый пост 1", author=user, image=image)
+    return Post.objects.create(
+        text="Тестовый пост 1", author=user, image=image)
 
 
 @pytest.fixture
@@ -48,6 +49,7 @@ def few_posts_with_group(mixer, user, group):
 
 
 @pytest.fixture
-def another_few_posts_with_group_with_follower(mixer, user, another_user, group):
+def another_few_posts_with_group_with_follower(
+        mixer, user, another_user, group):
     mixer.blend("posts.Follow", user=user, author=another_user)
     mixer.cycle(20).blend(Post, author=another_user, group=group)
