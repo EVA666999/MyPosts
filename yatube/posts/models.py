@@ -7,10 +7,13 @@ User = get_user_model()
 
 
 class Post(models.Model):
-    text = models.TextField(verbose_name="Текст", help_text="Введите текст поста")
-    pub_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
+    text = models.TextField(
+        verbose_name="Текст", help_text="Введите текст поста")
+    pub_date = models.DateTimeField(
+        auto_now_add=True, verbose_name="Дата публикации")
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="posts", verbose_name="Автор"
+        User, on_delete=models.CASCADE,
+        related_name="posts", verbose_name="Автор"
     )
     group = models.ForeignKey(
         "Group",
@@ -54,12 +57,15 @@ class Contact(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="comments", verbose_name="Пост"
+        Post, on_delete=models.CASCADE,
+        related_name="comments", verbose_name="Пост"
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="comments", verbose_name="Автор"
+        User, on_delete=models.CASCADE,
+        related_name="comments", verbose_name="Автор"
     )
-    text = models.TextField(verbose_name="Текст", help_text="Введите текст комментария")
+    text = models.TextField(
+        verbose_name="Текст", help_text="Введите текст комментария")
     created = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата публикации коментария"
     )

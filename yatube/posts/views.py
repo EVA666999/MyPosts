@@ -70,7 +70,8 @@ def post_edit(request, post_id):
     is_edit = True
     form = PostForm(instance=Post.objects.get(pk=post_id))
     if request.method == "POST":
-        form = PostForm(request.POST, files=request.FILES or None, instance=post)
+        form = PostForm(
+            request.POST, files=request.FILES or None, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -119,7 +120,8 @@ def profile_follow(request, username):
     user = request.user
     if (
         user != author
-        and not Follow.objects.filter(user=request.user, author=author).exists()
+        and not Follow.objects.filter(
+            user=request.user, author=author).exists()
     ):
         Follow.objects.get_or_create(user=user, author=author)
     return render(request, "posts/follow.html")

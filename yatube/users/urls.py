@@ -44,7 +44,8 @@ urlpatterns = [
     ),
     path(
         "password_reset/done/",
-        PasswordResetDoneView.as_view(template_name="users/password_reset_done.html"),
+        PasswordResetDoneView.as_view(
+            template_name="users/password_reset_done.html"),
         name="password_reset_done",
     ),
     path(
