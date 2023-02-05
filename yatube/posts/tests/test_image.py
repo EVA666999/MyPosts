@@ -11,13 +11,9 @@ from django.urls import reverse
 from posts.forms import PostForm
 from posts.models import Group, Post, User
 
-# Создаем временную папку для медиа-файлов;
-# на момент теста медиа папка будет переопределена
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 
-# Для сохранения media-файлов в тестах будет использоватьсяgs
-# временная папка TEMP_MEDIA_ROOT, а потом мы ее удалим
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostImagetests(TestCase):
     @classmethod
@@ -40,6 +36,7 @@ class PostImagetests(TestCase):
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
+        cache.clear()
         self.guest_client = Client()
         self.user = User.objects.create_user(username="StasBasov")
         self.authorized_client = Client()
@@ -74,7 +71,6 @@ class PostImagetests(TestCase):
                 text="Тестовый текст", image="posts/small.gif").exists()
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        cache.clear()
         response = self.guest_client.get(reverse("posts:index"))
         first_object = response.context["page_obj"][0]
         post_text_0 = first_object.text

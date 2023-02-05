@@ -23,13 +23,13 @@ class PostViewsTest(TestCase):
         )
 
     def setUp(self):
+        cache.clear()
         self.guest_client = Client()
         self.user = User.objects.create_user(username="StasBasov")
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
     def test_pages_uses_correct_template(self):
-        cache.clear()
         templates_pages_names = {
             "posts/index.html": reverse("posts:index"),
             "posts/group_list.html": reverse(
@@ -113,7 +113,6 @@ class PostViewsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_index_show_correct_context(self):
-        cache.clear()
         response = self.guest_client.get(reverse("posts:index"))
         first_object = response.context["page_obj"][0]
         post_text_0 = first_object.text
@@ -197,8 +196,7 @@ class PostViewsTest(TestCase):
                 "posts:group_posts", kwargs={"slug": self.group.slug}
             ): Post.objects.exclude(
                 group=self.post.group
-            ),  # получает набор
-            # объектов модели, которые НЕ соответствуют условию
+            ),
         }
         for value, expected in form_fields.items():
             with self.subTest(value=value):

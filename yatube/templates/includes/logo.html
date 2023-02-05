@@ -1,0 +1,150 @@
+<head>
+    <style>
+      body header, 
+      body main, 
+      body footer {
+          opacity: 0;
+      }
+      
+      body.is-active header, 
+      body.is-active main, 
+      body.is-active footer {
+          opacity: 1;
+      }
+      
+      body.is-active .page-loader {
+          display: none;
+      }
+      
+      body.is-active .hero-logo {
+          top: 40px;
+          width: 80px;
+          margin-top: 0;
+          margin-left: -40px;
+      }
+      
+      body.is-active .hero-logo svg {
+          width: 80px;
+          height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page loader-->
+    <div class="hero-logo js-hero-logo" style="display: none;">
+      <svg id="hero-logo" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="615px" height="295px" viewBox="0 0 615 295" style="enable-background:new 0 0 615 295;" xml:space="preserve">
+        <polygon class="js-hero-logo-polygon hero-logo-polygon-left" points="145.5,75.5 145.5,3.5 1.5,147.5 145.5,291.5 433.5,3.5 361.5,3.5 145.5,219.5 73.5,147.5 "></polygon>
+        <polygon class="js-hero-logo-polygon hero-logo-polygon-right" points="469.5,219.5 469.5,291.5 613.5,147.5 469.5,3.5 181.5,291.5 253.5,291.5 469.5,75.5 541.5,147.5 "></polygon>
+      </svg>
+    </div>
+  </body>
+</style>
+/*====================================================
+//  Variables
+//  Common
+//  Logo animation
+//===================================================*/
+/*====================================================
+//  Variables
+//===================================================*/
+/*====================================================
+//  Common
+//===================================================*/
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  transition: color 0.15s, background 0.15s, border 0.15s, opacity 0.15s;
+}
+
+*:after, *:before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+html {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  font-size: 100%;
+}
+
+body {
+  position: relative;
+  min-width: 310px;
+  height: 100%;
+  margin: 0;
+  background-color: #eaf5ff;
+}
+
+/*====================================================
+//  Logo animation
+//===================================================*/
+.hero-logo {
+  display: block !important;
+  width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -75px;
+  transition: all 400ms ease-out;
+}
+.hero-logo svg {
+  height: 140px;
+  width: 300px;
+  transition: all 400ms ease-out;
+  stroke: #75439a;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  opacity: 0;
+}
+.hero-logo.is-animated svg {
+  opacity: 1;
+}
+.hero-logo .js-hero-logo-polygon {
+  fill: transparent;
+  transition: fill 400ms ease-out;
+}
+.hero-logo.end-animation .js-hero-logo-polygon {
+  fill: #75439a;
+}
+</style>
+<script>
+    // --- GLOBAL VARIABLES --- //
+var classActive = "is-active";
+
+// --- COMPONENTS, PARTS --- //
+$(document).ready(function () {
+	// ---  COMPONENTS --- //
+	fn_components_animateLogo();
+});
+
+/* ===================================
+ *  Function: Animate Logo
+ * =================================== */
+function fn_components_animateLogo() {
+	if ($(".js-hero-logo").length) {
+		var logoBlock = $(".js-hero-logo");
+		var logoPaths = $(".js-hero-logo-polygon");
+		var logoPathLength = logoPaths[0].getTotalLength();
+
+		logoPaths
+			.css("stroke-dashoffset", logoPathLength)
+			.css("stroke-dasharray", logoPathLength);
+		logoBlock.addClass("is-animated");
+		logoPaths.animate({ "stroke-dashoffset": 0 }, 1500, function () {
+			logoBlock.addClass("end-animation");
+			setTimeout(function () {
+				$("body").addClass(classActive);
+			}, 500);
+		});
+	}
+}
+</script>

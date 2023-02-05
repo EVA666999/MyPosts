@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load thumbnail %}
+{% load static %}
 <div class="container">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h3 class="animate-charcter">Профаил</h3>
+      <h3 class="animate-charcter">Профаил {{author.get_full_name}}</h3>
     </div>
   </div>
 </div>
@@ -82,4 +83,5 @@
     </main>
   </body>
 </html>
+
 {% endblock %} 

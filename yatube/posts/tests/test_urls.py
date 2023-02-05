@@ -23,6 +23,7 @@ class PostUrlsTest(TestCase):
         )
 
     def setUp(self):
+        cache.clear()
         self.guest_client = Client()
         self.user = User.objects.create_user(username="HasNoName")
         self.authorized_client = Client()
@@ -55,7 +56,6 @@ class PostUrlsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_urls_guest_client_correct_template(self):
-        cache.clear()
         templates_url_names = {
             "posts/index.html": reverse("posts:index"),
             "posts/group_list.html": reverse(
@@ -72,12 +72,12 @@ class PostUrlsTest(TestCase):
 
     def test_an_unauthorized_user_cannot_create_post(self):
         response = self.guest_client.get(reverse("posts:post_create"))
-        self.assertRedirects(response, "/auth/login/?next=/create/")
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:post_create")}')
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_an_unauthorized_user_cannot_edit_post(self):
         response = self.guest_client.get(
             reverse("posts:edit_post", kwargs={"post_id": "2"})
         )
-        self.assertRedirects(response, f"/auth/login/?next=/posts/{2}/edit/")
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:edit_post", args=[2])}')
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)

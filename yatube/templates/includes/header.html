@@ -1,13 +1,13 @@
 {% load static %}
-  <div class="inner">
-    <div class="logo">Yatube</div>
+  <div class="inner" >
+    <div class="logo"><span style="color:red">Ya</span>Tube</div>
     <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
     <nav role='navigation'>
       <ul>
         {% if user.is_authenticated %}
         <li><a href="{% url 'posts:index' %}">На главную</a></li>
         <li><a href="{% url 'about:author' %}">Об авторе</a></li>
-        <li><a href="{% url 'users:logout' %}">Выйти</a></li>
+        <li><a href="{% url 'users:logout' %}">Выйти</a><span style="color:red">{{user.username}}</span></li>
         <li><a href="{% url 'users:password_change' %}">Изменить пароль</a></li>
         <li><a href="{% url 'users:password_reset' %}">Восстановить пароль</a></li>
         <li><a href="{% url 'about:tech' %}">Технологии</a></li>

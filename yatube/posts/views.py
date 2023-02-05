@@ -6,9 +6,12 @@ from django.views.decorators.cache import cache_page
 from .forms import CommentForm, PostForm
 from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
+from django.shortcuts import redirect, render 
+
+SECONDS_CACHE = 20
 
 
-@cache_page(20)
+@cache_page(SECONDS_CACHE, key_prefix='index_page')
 def index(request):
     context = get_page_context(Post.objects.all(), request)
     return render(request, "posts/index.html", context)
@@ -104,7 +107,7 @@ def follow_index(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    follower = Follow.objects.filter(user__following__author=user)
+    follower = Follow.objects.filter(user__following__author=user).exists()
     following = False
     if user != follower:
         following = True
@@ -121,7 +124,7 @@ def profile_follow(request, username):
         and not Follow.objects.filter(
             user=request.user, author=author).exists()
     ):
-        Follow.objects.create(user=user, author=author)
+        Follow.objects.get_or_create(user=user, author=author)
     return render(request, "posts/follow.html")
 
 
@@ -129,7 +132,6 @@ def profile_follow(request, username):
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     follower = Follow.objects.filter(user__following__author=request.user)
-    if Follow.objects.filter(user=request.user, author=author).exists():
-        Follow.objects.filter(user=request.user, author=author).delete()
+    Follow.objects.filter(user=request.user, author=author).delete()
     context = {" follower": follower}
     return render(request, "posts/follow.html", context)

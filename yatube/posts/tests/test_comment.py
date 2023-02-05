@@ -36,7 +36,7 @@ class PostCommentstests(TestCase):
         response = self.guest_client.get(
             reverse("posts:add_comment", kwargs={"post_id": self.post.id})
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_successful_submission_the_comment(self):
         comment_count = Comment.objects.count()

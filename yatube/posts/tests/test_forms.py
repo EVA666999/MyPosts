@@ -69,12 +69,13 @@ class PostCreateForm(TestCase):
 
     def test_an_unauthorized_user_cannot_create_post(self):
         response = self.guest_client.get(reverse("posts:post_create"))
-        self.assertRedirects(response, "/auth/login/?next=/create/")
+        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:post_create")}')
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_an_unauthorized_user_cannot_edit_post(self):
         response = self.guest_client.get(
             reverse("posts:edit_post", kwargs={"post_id": self.post.id})
         )
-        self.assertRedirects(response, "/auth/login/?next=/posts/1/edit/")
+        self.assertRedirects(response, f'{reverse("users:login")}?next={reverse("posts:edit_post", args=[self.post.id])}')
+
         self.assertEqual(response.status_code, HTTPStatus.FOUND)

@@ -75,6 +75,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
+    class Meta:
+        verbose_name = "Коментарий"
+        verbose_name_plural = "Коментарии"
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
