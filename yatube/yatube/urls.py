@@ -9,7 +9,6 @@ urlpatterns = [
     path("", include("posts.urls", namespace="posts")),
     path("admin/", admin.site.urls),
     path("about/", include("about.urls", namespace="about")),
-    path("avatar/", include("avatar.urls")),
 ]
 handler404 = "core.views.page_not_found"
 handler403 = "core.views.csrf_failure"
