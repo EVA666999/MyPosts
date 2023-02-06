@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -110,7 +109,6 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-CSRF_FAILURE_VIEW = "core.views.csrf_failure"
 
 CACHES = {
     "default": {
