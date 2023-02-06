@@ -4,6 +4,7 @@ from http import HTTPStatus
 
 from django import forms
 from django.conf import settings
+from django.core.cache import cache
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -28,6 +29,7 @@ class PostCreateForm(TestCase):
         )
 
     def setUp(self):
+        cache.clear()
         self.guest_client = Client()
         self.user = User.objects.create_user(username="StasBasov")
         self.authorized_client = Client()

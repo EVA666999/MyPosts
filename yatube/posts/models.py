@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from .max_length import MAX_LEGTH
 
@@ -71,12 +71,12 @@ class Comment(models.Model):
         auto_now_add=True, verbose_name="Дата публикации коментария"
     )
 
-    def __str__(self):
-        return self.text
-
     class Meta:
         verbose_name = "Коментарий"
         verbose_name_plural = "Коментарии"
+
+    def __str__(self):
+        return self.text
 
 
 class Follow(models.Model):
@@ -101,3 +101,6 @@ class Follow(models.Model):
                 name="unique_follow",
             )
         ]
+
+    def __str__(self):
+        return self.user, self.author
