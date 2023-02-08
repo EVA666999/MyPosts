@@ -3,14 +3,13 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
-from .forms import CommentForm, PostForm
+from .forms import CommentForm, PostForm, ProfileUpdateForm
 from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
 
 SECONDS_CACHE = 20
 
 
-@cache_page(SECONDS_CACHE, key_prefix="index_page")
 def index(request):
     context = get_page_context(Post.objects.all(), request)
     return render(request, "posts/index.html", context)
@@ -37,7 +36,15 @@ def profile(request, username):
             author=user,
         ).exists()
     )
-    context = {"posts": posts, "author": user, "following": following}
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST,
+                                 request.FILES,
+                                 instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect("posts:profile", request.user.username)
+    form = ProfileUpdateForm()
+    context = {"posts": posts, "author": user, "following": following, 'form': form}
     context.update(get_page_context(posts, request))
     return render(request, "posts/profile.html", context)
 

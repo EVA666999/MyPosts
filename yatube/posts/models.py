@@ -104,3 +104,11 @@ class Follow(models.Model):
 
     def __str__(self):
         return self.user, self.author
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to="posts/")
+
+    def __str__(self):
+        return self.user
