@@ -8,6 +8,8 @@ SECRET_KEY = "xgd&pimnukj(yg#%v-_$r+te+4r_no&8fx)jvt$%4qtmon3pph"
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'www.ihnupfidi.pythonanywhere.com',
+    'ihnupfidi.pythonanywhere.com',
     "localhost",
     "127.0.0.1",
     "[::1]",
