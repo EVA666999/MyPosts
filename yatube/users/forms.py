@@ -7,10 +7,32 @@ from .models import Contact
 User = get_user_model()
 
 
-class CreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+class UserRegistrationForm(UserCreationForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Введите имя',
+    }))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Введите фамилию',
+    }))
+    username = forms.CharField(widget=forms.TextInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Введите имя пользователя',
+    }))
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Введите емаил',
+    }))
+    password1 = forms.CharField(widget=forms.TextInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Введите пароль',
+    }))
+    password2 = forms.CharField(widget=forms.TextInput(attrs={
+     'class': 'form-control py-4', 'placeholder': 'Подтвердите пароль',
+    }))
+    image = forms.ImageField(widget=forms.FileInput(attrs={
+        'class': 'form-control py-4', 'placeholder': 'Выберите аватар',
+    }))
+
+    class Meta:
         model = User
-        fields = ("first_name", "last_name", "username", "email")
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2', 'image',)
 
 
 class ContactForm(forms.ModelForm):

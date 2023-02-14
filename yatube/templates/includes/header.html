@@ -1,182 +1,67 @@
 {% load static %}
-  <div class="inner">
-    <div class="logo">Yatube</div>
-    <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-    <nav role='navigation'>
-      <ul>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'posts:index' %}">На главную</a></li>
-        <li><a href="{% url 'about:author' %}">Об авторе</a></li>
-        <li><a href="{% url 'users:logout' %}">Выйти</a></li>
-        <li><a href="{% url 'users:password_change' %}">Изменить пароль</a></li>
-        <li><a href="{% url 'users:password_reset' %}">Восстановить пароль</a></li>
-        <li><a href="{% url 'about:tech' %}">Технологии</a></li>
-        <li><a href="{% url 'posts:post_create' %}">Новая запись</a></li>
-        {% else %}
-        <li><a href="{% url 'users:login' %}">Войти</a></li>
-        <li><a href="{% url 'users:signup' %}">Регистрация</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+      <a class="navbar-brand" href="{% url 'posts:index'%}">Yatube <i class="fa fa-y-combinator" aria-hidden="true"></i> </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about:author' %}">Об авторе <i class="fa fa-heart-o" aria-hidden="true"></i> </a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:follow_index' %}">Избранные авторы <i class="fa fa-heart" aria-hidden="true"></i></i></i> </a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'posts:post_create' %}">Новая запись <i class="fa fa-file" aria-hidden="true"></i></i> </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users:password_change' %}">Изменить пароль <i class="fa fa-key" aria-hidden="true"></i> </a>
+      </li>
         {% endif %}
-      </ul>
-    </nav>  
+              {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-user-circle"></i>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li>
+                          <a class="dropdown-item" href="{% url 'posts:profile' user.username %}">Профиль {{ user.get_full_name }}<i class="fas fa-user-circle"></i></a>
+                      </li>
+                      <li><a class="dropdown-item" href="{% url 'posts:post_create' %}">Новая запись <i class="fa fa-file" aria-hidden="true"></i></a></li>
+                      {% if user.is_superuser or user.is_staff %}
+                        <li><a class="dropdown-item" href="{% url 'admin:index'%} ">Админ-панель</a></li>
+                        {% endif %}
+                      <li>
+                          <hr class="dropdown-divider">
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'users:logout'%}">Выйти <i class="fas fa-sign-in-alt"></i></a>
+                    </li>
+                  </ul>
+              </li>
+              {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:signup' %}">Регистрация <i class="fa fa-registered" aria-hidden="true"></i></i></a>
+          </li>
+              {% endif %}
+          </ul>
+      </div>
   </div>
-<style>
-  /* apply a natural box layout model to all elements */
-*,
-*:before,
-*:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-::selection {
-  background: #000;
-  color: #aaf;
-}
-.alternate ::selection {
-  background: #c00;
-  color: #000;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 2000px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-ul,
-li,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-a,
-.logo {
-  font-family: "Lato", "Verdana", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
-}
-
-.inner {
-  width: 800px;
-  position: relative;
-  margin: 0 auto;
-}
-
-header {
-  position: top;
-  width: 100%;
-  padding-top: 10px;
-  background: #000;
-  transition: 0.7s all;
-  z-index: 100;
-}
-
-header.alt-header {
-  background: #fff;
-}
-
-.alt-header a {
-  color: #000;
-}
-
-body.header-fixed header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding-top: 0;
-  width: 100%;
-  z-index: 2;
-}
-
-li {
-  list-style: none;
-}
-
-nav {
-  overflow: hidden;
-}
-
-nav ul {
-  float: right;
-}
-
-nav li {
-  display: inline;
-  float: left;
-}
-
-nav a {
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
-  padding: 25px;
-  transition: 0.3s all;
-}
-
-nav a:hover {
-  background: red;
-}
-
-.logo {
-  float: left;
-  color: #fff;
-  font-size: 50px;
-  line-height: 50px;
-  transition: 0.7s all;
-}
-
-.alt-header .logo {
-  color: #000;
-}
-
-body.header-fixed .logo {
-  font-size: 30px;
-}
-
-.alternate {
-  background: #000;
-  color: #fff;
-}
-
-section .inner {
-  padding-top: 200px;
-}
-</style>
-<script>
-  /*
-
-Tinkering around with a fixed nav bar, and changing it based on scroll
+</nav>
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
-*/
-
-$(document).ready(function () {
-  $(window).scroll(function () {
-    var scrollTop = $(window).scrollTop();
-    if (scrollTop > 49) {
-      $("body").addClass("header-fixed");
-    } else {
-      $("body").removeClass("header-fixed");
-    }
-    // change the style of the navbar when the user scrolls into the next zone.
-    // get the distance of the 2nd section from the top of the page - height of header.
-    var topOffset = $("#demosection2").offset().top;
-    var headerHeight = $("#topnav").height();
-    var transitionPoint = topOffset - headerHeight;
-    if (scrollTop > transitionPoint) {
-      $("#topnav").addClass("alt-header");
-    } else {
-      $("#topnav").removeClass("alt-header");
-    }
-  });
-});
-</script>
+<!-- FontAwesome script -->
+<script src="{% static 'vendor/fontawesome/fontawesome-icons.js' %}" crossorigin="anonymous"></script>
+<!-- Bootstrap core CSS -->
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">

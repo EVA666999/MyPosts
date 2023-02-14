@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 from .forms import CommentForm, PostForm, ProfileUpdateForm
 from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
+from django.urls import reverse
 
 SECONDS_CACHE = 20
 
@@ -36,15 +37,7 @@ def profile(request, username):
             author=user,
         ).exists()
     )
-    if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST,
-                                 request.FILES,
-                                 instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect("posts:profile", request.user.username)
-    form = ProfileUpdateForm()
-    context = {"posts": posts, "author": user, "following": following, 'form': form}
+    context = {"posts": posts, "author": user, "following": following, }
     context.update(get_page_context(posts, request))
     return render(request, "posts/profile.html", context)
 
@@ -127,13 +120,11 @@ def profile_follow(request, username):
     user = request.user
     if user != author:
         Follow.objects.get_or_create(user=user, author=author)
-    return render(request, "posts/follow.html")
+    return redirect(reverse('posts:profile', args=[username]))
 
 
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    follower = Follow.objects.filter(user__following__author=request.user)
     Follow.objects.filter(user=request.user, author=author).delete()
-    context = {" follower": follower}
-    return render(request, "posts/follow.html", context)
+    return redirect('posts:profile', username=author)

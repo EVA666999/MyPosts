@@ -1,20 +1,15 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% block content %}
-{% include 'posts/includes/switcher.html' %}
+
 <title>{% block title %}Главная страница{% endblock title %}</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" rel="stylesheet">
 {% for post in page_obj %}
 <img
       class="rounded-circle account-img"
-      src="{{ post.author.profile.image.url }}" width=100 height=100
+      src="{{ post.author.image.url }}" width=100 height=100
     />
 {% include 'includes/code.html' %}
-  {% if post.group %}   
-   <a href="{% url 'posts:group_posts' post.group.slug  %}">все завписи группы</a>
-   <a href="{% url 'posts:post_detail' post.id %}">Подробная информация</a>
-   {% endif %} 
-  {% if not forloop.last %}<hr>{% endif %}
 {% endfor %}
 {% include 'posts/includes/paginator.html' %}
 {% endblock %}
