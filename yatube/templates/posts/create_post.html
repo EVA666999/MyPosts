@@ -11,7 +11,7 @@
 <h1> Добавить запись</h1>
 {% endif %}
 <form method="post" enctype="multipart/form-data">{{form.as_p}}{% csrf_token%}
-  <button type="submit" class="btn btn-primary">
+  <button type="submit" class="btn btn-outline-danger">
     {% if is_edit %}
       Сохранить
     {% else %}

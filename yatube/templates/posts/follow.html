@@ -3,7 +3,6 @@
 {% block content %}
 {% load thumbnail %}
 <title>{% block title %}Подписки{% endblock %}</title>
-  {% include 'posts/includes/switcher.html' %}
   {% for posts in page_obj %}
   {% include 'includes/code4.html' %} 
     {% if post.group %} 

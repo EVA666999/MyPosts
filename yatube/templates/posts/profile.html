@@ -48,14 +48,14 @@
 <div class="mb-5">
   {% if following %}
     <a
-      class="btn btn-lg btn-light"
+    class="btn btn-outline-danger"
       href="{% url 'posts:profile_unfollow' author.username %}" role="button"
     >
       Отписаться от {{author.get_full_name}}
     </a>
   {% else %}
       <a
-        class="btn btn-lg btn-primary"
+      class="btn btn-outline-danger"
         href="{% url 'posts:profile_follow' author.username %}" role="button"
       >
         Подписаться на {{author.get_full_name}}

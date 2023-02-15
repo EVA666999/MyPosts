@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class Post(models.Model):
+    like = models.ManyToManyField(User, related_name="blog_posts")
     text = models.TextField(
         verbose_name="Текст", help_text="Введите текст поста")
     pub_date = models.DateTimeField(
@@ -28,13 +29,19 @@ class Post(models.Model):
     )
     image = models.ImageField("Картинка", upload_to="posts/", blank=True)
 
+    def total_like(self):
+        return self.like.count()
+
     class Meta:
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
         ordering = ("-pub_date",)
 
     def __str__(self):
-        return str(self.text)
+        return self.text
+    
+    def total_like(self):
+        return self.like.count()
 
 
 class Group(models.Model):

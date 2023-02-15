@@ -1,18 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.cache import cache_page
-
-from .forms import CommentForm, PostForm, ProfileUpdateForm
+from .forms import CommentForm, PostForm
 from .models import Comment, Follow, Group, Post, User
 from .utils import get_page_context
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.db.models import Count
+from django.views.decorators.http import require_POST
 
 SECONDS_CACHE = 20
 
 
 def index(request):
-    context = get_page_context(Post.objects.all(), request)
+    posts = Post.objects.all()
+    for post in posts:
+        post.total_likes = post.total_like()
+    context = get_page_context(posts, request)
     return render(request, "posts/index.html", context)
 
 
@@ -128,3 +133,16 @@ def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user, author=author).delete()
     return redirect('posts:profile', username=author)
+
+
+def LikeView(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST' and request.is_ajax():
+        post.like.add(request.user)
+        total_likes = post.like.count()
+        data = {
+            "total_likes": total_likes,
+        }
+        return JsonResponse(data)
+    else:
+        return JsonResponse({"error": "Invalid request"})

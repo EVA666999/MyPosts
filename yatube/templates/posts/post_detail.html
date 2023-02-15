@@ -46,7 +46,7 @@
           <ul class="list-group list-group-flush">
             
             <li class="list-group-item">
-              Дата публикации:
+              Дата публикации: 
               {{ post.pub_date|date:"d E Y" }}
             </li>
             <!-- если у поста есть группа -->   
@@ -55,7 +55,7 @@
               Группа: {{post.group.slug}}
                       {% endif %}  
               {% if post.group %}
-              <a href="{% url 'posts:group_posts' post.group.slug  %}">
+              <a href="{% url 'posts:group_posts' post.group.slug  %}" class="btn btn-outline-danger">
                 все записи группы
               </a>
               {% endif %} 
@@ -68,13 +68,13 @@
               {{post.author.posts.count}}
             </li>
             <li class="list-group-item">
-              <a href="{% url 'posts:profile' post.author.username %}">
+              <a href="{% url 'posts:profile' post.author.username %}" class="btn btn-outline-danger">
                 все посты пользователя
               </a>              
             </li>
           </ul>
         </aside>
-        <article class="col-12 col-md-9">
+        <article class="col-12 col-md-9" >
       <div class="container">
     <div class="service-details">
       {% thumbnail post.image "1333x700" crop="center" upscale=True as im %}
@@ -87,14 +87,15 @@
       </div>
       <div class="service-white service-text">
         <p>{{ post.author.get_full_name }}</p>
-        <a href="{% url 'posts:profile' post.author.username %}">Профиль {{ post.author.get_full_name }}</a>
+        <a href="{% url 'posts:profile' post.author.username %}"> Профиль {{ post.author.get_full_name }}</a>
         {% if post.group %}   
-        <a href="{% url 'posts:group_posts' post.group.slug  %}">все завписи группы</a>
+        <a href="{% url 'posts:group_posts' post.group.slug  %}"> все завписи группы</a>
         {% endif %} 
        {% if not forloop.last %}<hr>{% endif %}
       </div>
     </div>
   </div>
+  <div>
   <style>
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700);
 body {
@@ -225,7 +226,7 @@ body {
   color: #000 !important;
 }
 </style>
-          <a class="btn btn-primary"  href="{% url 'posts:edit_post' post.pk %}">
+          <a class="btn btn-outline-danger"  href="{% url 'posts:edit_post' post.pk %}">
             редактировать запись
           </a>
         </article>
@@ -239,7 +240,7 @@ body {
             <div class="form-group mb-2">
               {{ form.text|addclass:"form-control" }}
             </div>
-            <button type="submit" class="btn btn-primary">Отправить</button>
+            <button type="submit" class="btn btn-outline-danger">Отправить</button>
           </form>
         </div>
       </div>
