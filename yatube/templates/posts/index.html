@@ -9,26 +9,6 @@
       src="{{ post.author.image.url }}" width=100 height=100
     />
 {% include 'includes/code.html' %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-  $(".like-button").click(function() {
-    var post_id = $(this).data("post-id");
-    $.ajax({
-      type: "POST",
-      url: "/like/",
-      data: {
-        "post_id": post_id,
-        "csrfmiddlewaretoken": "{{ csrf_token }}"
-      },
-      success: function(data) {
-        // Обновляем количество лайков на странице
-        $(".likes-count[data-post-id=" + post_id + "]").text("Likes: " + data.likes_count);
-      }
-    });
-  });
-});
-</script>
 {% endfor %}
 {% include 'posts/includes/paginator.html' %}
 {% endblock %}
