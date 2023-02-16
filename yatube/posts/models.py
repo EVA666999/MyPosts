@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class Post(models.Model):
+    dislike = models.ManyToManyField(User, related_name="disliked_posts")
     like = models.ManyToManyField(User, related_name="blog_posts")
     text = models.TextField(
         verbose_name="Текст", help_text="Введите текст поста")
@@ -31,6 +32,9 @@ class Post(models.Model):
 
     def total_like(self):
         return self.like.count()
+    
+    def total_dislike(self):
+        return self.dislike.count()
 
     class Meta:
         verbose_name = "Пост"
@@ -39,9 +43,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.text
-    
-    def total_like(self):
-        return self.like.count()
 
 
 class Group(models.Model):

@@ -24,4 +24,5 @@ urlpatterns = [
         name="profile_unfollow",
     ),
     path('like/<int:pk>', views.LikeView, name='like_post'),
+    path('dislike/<int:pk>', views.DisLikeView, name='dislike_post'),
 ]

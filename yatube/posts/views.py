@@ -17,6 +17,7 @@ def index(request):
     posts = Post.objects.all()
     for post in posts:
         post.total_likes = post.total_like()
+        post.total_dislikes = post.total_dislike()
     context = get_page_context(posts, request)
     return render(request, "posts/index.html", context)
 
@@ -139,10 +140,25 @@ def LikeView(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST' and request.is_ajax():
         post.like.add(request.user)
-        total_likes = post.like.count()
-        data = {
-            "total_likes": total_likes,
-        }
-        return JsonResponse(data)
-    else:
-        return JsonResponse({"error": "Invalid request"})
+    total_likes = post.like.count()
+    newCount = None
+    if request.user.is_authenticated:
+        newCount = total_likes
+    data = {
+        "total_likes": newCount,
+    }
+    return JsonResponse(data)
+
+
+def DisLikeView(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST' and request.is_ajax():
+        post.dislike.add(request.user)
+    total_dislikes = post.dislike.count()
+    newCount = None
+    if request.user.is_authenticated:
+        newCount = total_dislikes
+    data = {
+        "total_dislikes": newCount,
+    }
+    return JsonResponse(data)
