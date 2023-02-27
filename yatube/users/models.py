@@ -11,4 +11,4 @@ class Contact(models.Model):
 
 
 class User(AbstractUser):
-    image = models.ImageField(upload_to="posts/", null=True, blank=True)
+    image = models.ImageField(upload_to="posts/", null=True, blank=True, default='default.jpg')

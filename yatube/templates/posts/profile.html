@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load thumbnail %}
+{% load static %}
 {% if request.user.is_authenticated %}
 <div class="container">
   <div class="row">
     <div class="col-md-12 text-center">
-      <h3 class="animate-charcter">{{ author.get_full_name }}
-      </h3>
+      <h3 class="animate-charcter">{{ author.get_full_name }}</h3>
     </div>
   </div>
 </div>
-<img
-      class="rounded-circle account-img"
-      src="{{ author.image.url }}" width=100 height=100
-    />
-    {%endif%}
+{% if author.image %}
+<img class="rounded-circle account-img" src="{{ author.image.url }}" width=100 height=100 />
+{% else %}
+<img src="{% static 'vendor/img/default.jpg' %}" alt="{{ user.username }}" class="img-thumbnail"> src="/media/default.jpg"
+{% endif %}
+{% endif %}
 <style>
   .animate-charcter {
     text-transform: uppercase;

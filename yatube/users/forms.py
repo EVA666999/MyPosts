@@ -20,15 +20,15 @@ class UserRegistrationForm(UserCreationForm):
     email = forms.CharField(widget=forms.EmailInput(attrs={
      'class': 'form-control py-4', 'placeholder': 'Введите емаил',
     }))
-    password1 = forms.CharField(widget=forms.TextInput(attrs={
-     'class': 'form-control py-4', 'placeholder': 'Введите пароль',
-    }))
-    password2 = forms.CharField(widget=forms.TextInput(attrs={
-     'class': 'form-control py-4', 'placeholder': 'Подтвердите пароль',
-    }))
+    password1 = forms.CharField(
+        label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label='Password confirmation', widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
     image = forms.ImageField(widget=forms.FileInput(attrs={
-        'class': 'form-control py-4', 'placeholder': 'Выберите аватар',
-    }))
+    'class': 'form-control py-4', 'placeholder': 'Выберите аватар',
+    }), required=False)
 
     class Meta:
         model = User
