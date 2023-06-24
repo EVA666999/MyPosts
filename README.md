@@ -16,6 +16,9 @@ Django 2.2.19
 ``` 
 python -m venv venv
 ```
+```
+source venv/script/activate
+```
 - Установите зависимости из файла requirements.txt
  ```
 pip install -r requirements.txt
