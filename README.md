@@ -43,6 +43,8 @@
 <code>python manage.py runserver</code>
 </pre>
 <h3>Авторы</h3>
-@Василе
+
+- [@octokatherine](https://www.github.com/EVA666999)
+
 
 <p>Большое спасибо за посещение репозитория проекта MyPosts! Если у вас есть вопросы или предложения, не стесняйтесь связаться со мной.</p>
