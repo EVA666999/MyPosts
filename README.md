@@ -27,18 +27,18 @@
 
 <h1>Запуск проекта в dev-режиме</h1>
 <h3>Чтобы запустить проект в режиме разработки, следуйте инструкциям ниже:</h3>
-1.<h4>Установите и активируйте виртуальное окружение</h4>
+1.<h4>1.Установите и активируйте виртуальное окружение</h4>
 <pre>
 <code>python -m venv venv</code>
 </pre>
 <pre>
 <code>source venv/Scripts/activate</code>
 </pre>
-2.<h4>Установите зависимости из файла requirements.txt</h4>
+2.<h4>2.Установите зависимости из файла requirements.txt</h4>
 <pre>
 <code>pip install -r requirements.txt</code>
 </pre>
-3.<h4>В папке с файлом manage.py выполните следующую команду</h4>
+3.<h4>3.В папке с файлом manage.py выполните следующую команду</h4>
 <pre>
 <code>python manage.py runserver</code>
 </pre>
